@@ -1,9 +1,12 @@
-import 'package:bmi_calculator/reusable_card.dart';
-import 'package:bmi_calculator/round_icon_button.dart';
+import 'package:bmi_calculator/calculate_bmi.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'constants.dart';
-import 'icon_content.dart';
+import '../components/bottom_button.dart';
+import '../components/round_button.dart';
+import '../constants.dart';
+import '../components/icon_content.dart';
 
 enum Gender { male, female }
 
@@ -16,7 +19,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Gender? selectedGender;
-  int height = 160;
+  int height = 155;
   int weight = 35;
   int age = 18;
 
@@ -26,7 +29,6 @@ class _InputPageState extends State<InputPage> {
       appBar: AppBar(
         title: const Text('BMI CALCULATOR'),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0A0E21),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -209,13 +211,22 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: bottomContainerColor,
-            margin: const EdgeInsets.only(
-              top: 15,
-            ),
-            height: bottomContainerHeight,
-            width: double.infinity,
+          BottomButton(
+            ontap: () {
+              CalculateBMI calc = CalculateBMI(height: height, weight: weight);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultsPage(
+                    bmiResult: calc.bmiResult(),
+                    result: calc.getResult(),
+                    interpretation: calc.getInterpretation(),
+                  ),
+                ),
+              );
+            },
+            text: 'CALCULATE',
           ),
         ],
       ),
